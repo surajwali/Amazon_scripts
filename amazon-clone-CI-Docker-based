@@ -54,22 +54,22 @@ pipeline{
                 script{
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
                        sh "docker build -t amazon ."
-                       sh "docker tag amazon ravirekha1/amazon:latest "
-                       sh "docker push ravirekha1/amazon:latest "
+                       sh "docker tag amazon surajwali/amazon:latest "
+                       sh "docker push surajwali/amazon:latest "
                     }
                 }
             }
         }
         stage("TRIVY"){
             steps{
-                sh "trivy image ravirekha1/amazon:latest > trivyimage.txt"
+                sh "trivy image surajwali/amazon:latest > trivyimage.txt"
             }
         }
         stage("deploy_docker"){
             steps{
                 sh "docker stop amazon || true"  // Stop the container if it's running, ignore errors
                 sh "docker rm amazon || true" 
-                sh "docker run -d --name amazon -p 4000:3000 ravirekha1/amazon:latest"
+                sh "docker run -d --name amazon -p 4000:3000 surajwali/amazon:latest"
             }
         }
     }
